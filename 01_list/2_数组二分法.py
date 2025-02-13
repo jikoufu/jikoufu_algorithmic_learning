@@ -20,3 +20,4 @@ def binary_search(nums, target):
 nums = [-1, 0, 3, 5, 9, 12]
 target = 9
 print(binary_search(nums, target))
+assert binary_search(nums, target) == 4
