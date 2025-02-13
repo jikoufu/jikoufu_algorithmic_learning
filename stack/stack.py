@@ -1,5 +1,5 @@
 # 初始化栈
-# Python 没有内置的栈类，可以把 list 当作栈来使用
+# Python 没有内置的栈类，可以把 01_list 当作栈来使用
 stack: list[int] = []
 # 元素入栈
 stack.append(1)
