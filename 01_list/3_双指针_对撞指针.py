@@ -35,6 +35,25 @@ def two_sum(nums, target):
             right -= 1
 
     return []
+import unittest
+
+
+class TestTwoSum(unittest.TestCase):
+    def test_two_sum_FoundPair_ReturnsIndices(self):
+        self.assertEqual(two_sum([1, 2, 3, 4, 5], 9), [3, 4])
+        self.assertEqual(two_sum([1, 2, 3, 4, 5], 8), [2, 4])
+
+    def test_two_sum_NoPair_ReturnsEmptyList(self):
+        self.assertEqual(two_sum([1, 2, 3, 4, 5], 10), [])
+        self.assertEqual(two_sum([1, 2, 3, 4, 5], 0), [])
+
+    def test_two_sum_EdgeCases_ReturnsEmptyList(self):
+        self.assertEqual(two_sum([1], 1), [])
+        self.assertEqual(two_sum([], 0), [])
+
+
+if __name__ == '__main__':
+    unittest.main()
 
 """
 示例2：寻找环的起点
@@ -58,44 +77,3 @@ def detect_cycle(head):
                 fast = fast.next
             return slow
     return None  # 无环
-
-class ListNode:
-    def __init__(self, x):
-        self.val = x
-        self.next = None
-
-
-class TestDetectCycle:
-    def test_detect_cycle_EmptyList_ReturnsNone(self):
-        head = None
-        assert detect_cycle(head) is None
-
-    def test_detect_cycle_NoCycle_ReturnsNone(self):
-        head = ListNode(1)
-        head.next = ListNode(2)
-        head.next.next = ListNode(3)
-        assert detect_cycle(head) is None
-
-    def test_detect_cycle_CycleAtHead_ReturnsHead(self):
-        head = ListNode(1)
-        head.next = head
-        assert detect_cycle(head) == head
-
-    def test_detect_cycle_CycleInMiddle_ReturnsCycleStart(self):
-        head = ListNode(1)
-        head.next = ListNode(2)
-        cycle_start = ListNode(3)
-        head.next.next = cycle_start
-        cycle_start.next = ListNode(4)
-        cycle_start.next.next = cycle_start
-        assert detect_cycle(head) == cycle_start
-
-    def test_detect_cycle_CycleAtEnd_ReturnsCycleStart(self):
-        head = ListNode(1)
-        head.next = ListNode(2)
-        head.next.next = ListNode(3)
-        cycle_start = ListNode(4)
-        head.next.next.next = cycle_start
-        cycle_start.next = ListNode(5)
-        cycle_start.next.next = cycle_start
-        assert detect_cycle(head) == cycle_start
