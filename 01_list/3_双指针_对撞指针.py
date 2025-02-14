@@ -8,7 +8,6 @@
 滑动窗口（Sliding Window） → 适用于子数组问题，如求最小覆盖子串
 """
 
-
 # (1) 对撞指针：适用于排序数组或字符串
 """
 示例1：两数之和（输入已排序数组）
@@ -28,13 +27,15 @@ def two_sum(nums, target):
     while left < right:
         total = nums[left] + nums[right]
         if total == target:
-            return [left,right]
-        elif total< target:
+            return [left, right]
+        elif total < target:
             left += 1
         else:
             right -= 1
 
     return []
+
+
 import unittest
 
 
@@ -52,8 +53,112 @@ class TestTwoSum(unittest.TestCase):
         self.assertEqual(two_sum([], 0), [])
 
 
-if __name__ == '__main__':
-    unittest.main()
+"""
+示例2：判断回文字符串
+题目：给定字符串 s，判断是否是回文（忽略非字母数字字符，忽略大小写）。
+
+思路：
+
+左指针 指向开头，右指针 指向结尾
+只考虑字母和数字，跳过其他字符
+若 s[left] != s[right]，则不是回文
+移动指针 left++ 或 right-- 继续比较
+"""
+
+
+def is_palindrome(s):
+    left, right = 0, len(s) - 1
+    while left < right:
+        if s[left] != s[right]:
+            return False
+        left += 1
+        right -= 1
+    return True
+
+
+class TestIsPalindrome(unittest.TestCase):
+    def test_is_palindrome_EmptyString_ReturnsTrue(self):
+        self.assertTrue(is_palindrome(""))
+
+    def test_is_palindrome_SingleCharacter_ReturnsTrue(self):
+        self.assertTrue(is_palindrome("a"))
+
+    def test_is_palindrome_TwoSameCharacters_ReturnsTrue(self):
+        self.assertTrue(is_palindrome("aa"))
+
+    def test_is_palindrome_TwoDifferentCharacters_ReturnsFalse(self):
+        self.assertFalse(is_palindrome("ab"))
+
+    def test_is_palindrome_PalindromeString_ReturnsTrue(self):
+        self.assertTrue(is_palindrome("racecar"))
+
+    def test_is_palindrome_NonPalindromeString_ReturnsFalse(self):
+        self.assertFalse(is_palindrome("hello"))
+
+    def test_is_palindrome_PalindromeDifferentCase_ReturnsFalse(self):
+        self.assertFalse(is_palindrome("RaceCar"))
+
+    def test_is_palindrome_PalindromeWithNonAlphanumeric_ReturnsFalse(self):
+        self.assertFalse(is_palindrome("A man, a plan, a canal, Panama"))
+
+
+"""
+示例2：寻找环的起点
+题目：如果链表有环，返回环的起点节点。
+
+思路：
+
+先用快慢指针判断是否有环（如上）。
+如果有环，让 其中一个指针回到起点，另一个指针停留在相遇点。
+两个指针每次走一步，相遇时即为环的起点。
+"""
+
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
+def detect_cycle(head):
+    slow, fast = head, head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:  # 有环
+            return True
+    return False
+
+
+class TestDetectCycle(unittest.TestCase):
+    def test_detect_cycle_EmptyList_ReturnsFalse(self):
+        self.assertFalse(detect_cycle(None))
+
+    def test_detect_cycle_NoCycle_ReturnsFalse(self):
+        head = ListNode(1)
+        head.next = ListNode(2)
+        head.next.next = ListNode(3)
+        self.assertFalse(detect_cycle(head))
+
+    def test_detect_cycle_CycleExists_ReturnsTrue(self):
+        head = ListNode(1)
+        node2 = ListNode(2)
+        node3 = ListNode(3)
+        head.next = node2
+        node2.next = node3
+        node3.next = node2  # 创建循环
+        self.assertTrue(detect_cycle(head))
+
+    def test_detect_cycle_SingleNodeNoCycle_ReturnsFalse(self):
+        head = ListNode(1)
+        self.assertFalse(detect_cycle(head))
+
+    def test_detect_cycle_SingleNodeCycle_ReturnsTrue(self):
+        head = ListNode(1)
+        head.next = head  # 创建自循环
+        self.assertTrue(detect_cycle(head))
+
+
 
 """
 示例2：寻找环的起点
@@ -71,9 +176,56 @@ def detect_cycle(head):
         slow = slow.next
         fast = fast.next.next
         if slow == fast:  # 有环
-            slow = head  # 重新指向链表头
-            while slow != fast:  # 重新遍历找环起点
+            slow = head
+            while slow != fast:
                 slow = slow.next
                 fast = fast.next
-            return slow
-    return None  # 无环
+            return slow  # 返回环的起点
+    return None  # 没有环
+
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+
+class TestDetectCycle(unittest.TestCase):
+    def test_detect_cycle_EmptyList_ReturnsNone(self):
+        self.assertIsNone(detect_cycle(None))
+
+    def test_detect_cycle_NoCycle_ReturnsNone(self):
+        head = ListNode(1)
+        head.next = ListNode(2)
+        head.next.next = ListNode(3)
+        self.assertIsNone(detect_cycle(head))
+
+    def test_detect_cycle_CycleAtBeginning_ReturnsHead(self):
+        head = ListNode(1)
+        head.next = head
+        self.assertIs(detect_cycle(head), head)
+
+    def test_detect_cycle_CycleInMiddle_ReturnsCycleStart(self):
+        head = ListNode(1)
+        head.next = ListNode(2)
+        cycle_start = ListNode(3)
+        head.next.next = cycle_start
+        cycle_start.next = ListNode(4)
+        cycle_start.next.next = cycle_start
+        self.assertIs(detect_cycle(head), cycle_start)
+
+    def test_detect_cycle_CycleAtEnd_ReturnsCycleStart(self):
+        head = ListNode(1)
+        head.next = ListNode(2)
+        head.next.next = ListNode(3)
+        cycle_start = ListNode(4)
+        head.next.next.next = cycle_start
+        cycle_start.next = cycle_start
+        self.assertIs(detect_cycle(head), cycle_start)
+
+
+
+
+
+
+if __name__ == '__main__':
+    unittest.main()
