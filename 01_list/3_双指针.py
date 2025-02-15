@@ -225,5 +225,17 @@ class TestDetectCycle(unittest.TestCase):
         self.assertIs(detect_cycle(head), cycle_start)
 
 
+"""
+示例1：最小覆盖子串
+题目：给定字符串 s 和 t，在 s 中找到包含 t 所有字符的最小子串。
+
+思路：
+
+用 双指针（滑动窗口） 维护 left 和 right。
+右指针扩展窗口，直到窗口包含 t 的所有字符。
+左指针收缩窗口，直到不能再缩小为止。
+记录最短子串的 start 和 length
+"""
+
 if __name__ == '__main__':
     unittest.main()
