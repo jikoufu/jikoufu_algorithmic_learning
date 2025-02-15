@@ -159,7 +159,6 @@ class TestDetectCycle(unittest.TestCase):
         self.assertTrue(detect_cycle(head))
 
 
-
 """
 示例2：寻找环的起点
 题目：如果链表有环，返回环的起点节点。
@@ -170,6 +169,8 @@ class TestDetectCycle(unittest.TestCase):
 如果有环，让 其中一个指针回到起点，另一个指针停留在相遇点。
 两个指针每次走一步，相遇时即为环的起点。
 """
+
+
 def detect_cycle(head):
     slow, fast = head, head
     while fast and fast.next:
@@ -182,6 +183,7 @@ def detect_cycle(head):
                 fast = fast.next
             return slow  # 返回环的起点
     return None  # 没有环
+
 
 class ListNode:
     def __init__(self, x):
@@ -221,10 +223,6 @@ class TestDetectCycle(unittest.TestCase):
         head.next.next.next = cycle_start
         cycle_start.next = cycle_start
         self.assertIs(detect_cycle(head), cycle_start)
-
-
-
-
 
 
 if __name__ == '__main__':
